@@ -13,11 +13,11 @@ class Config:
     test_dir = os.path.join(data_dir, "test", "unknown")
 
     # 圖片大小
-    image_size = 768
+    image_size = 224
 
     # 訓練設定
-    epochs = 50
-    batch_size = 16
+    epochs = 25
+    batch_size = 32
     num_workers = 8
     pin_memory = True
 

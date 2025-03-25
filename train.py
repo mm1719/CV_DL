@@ -75,13 +75,13 @@ def train_model(model, train_loader, val_loader, logger, writer):
     device = torch.device(config.device if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
-    criterion = nn.CrossEntropyLoss(label_smoothing=config.label_smoothing)
+    criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(),
                                 lr=config.lr,
                                 momentum=config.momentum,
                                 weight_decay=config.weight_decay)
 
-    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=config.epochs - config.warmup_epochs, eta_min=config.min_lr)
+    cosine_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=config.epochs - config.warmup_epochs)
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: epoch / config.warmup_epochs if epoch < config.warmup_epochs else 1.0)
     scheduler_after = cosine_scheduler
 
