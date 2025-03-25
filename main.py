@@ -44,7 +44,7 @@ def main():
         logger.info("🚀 開始訓練")
         model = build_model(config)
         train_loader, val_loader = get_dataloaders(config)
-        train_model(model, train_loader, val_loader, config, output_dir, writer, logger)
+        train_model(model, train_loader, val_loader, logger, writer)
 
     elif args.mode == "test":
         logger.info("🔍 開始預測")

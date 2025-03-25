@@ -4,17 +4,18 @@ from torch.utils.data import DataLoader
 from config import config
 
 def get_transforms(config):
-    # 根據 RegNet 論文設定
     train_transform = transforms.Compose([
-        transforms.Resize((config.image_size, config.image_size)),
+        transforms.Resize((256, 256)),
+        transforms.CenterCrop(config.image_size),
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],  # ImageNet mean/std
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225]),
     ])
 
     test_transform = transforms.Compose([
-        transforms.Resize((config.image_size, config.image_size)),
+        transforms.Resize((256, 256)),
+        transforms.CenterCrop(config.image_size),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406],
                              std=[0.229, 0.224, 0.225]),
@@ -41,14 +42,11 @@ def get_dataloaders(config):
 def get_test_loader(config):
     _, test_transform = get_transforms(config)
 
-    # 為了不讓 ImageFolder 解析出 label，我們直接進到 unknown 資料夾
     test_dataset = datasets.ImageFolder(
-        root=os.path.dirname(config.test_dir),  # data/test
+        root=os.path.dirname(config.test_dir),
         transform=test_transform
     )
 
-    # 對 ImageFolder 而言，會回傳 (image, class_idx)，但我們只需要 image。
-    # 所以我們在 prediction 時記得忽略 label。
     test_loader = DataLoader(test_dataset, batch_size=config.batch_size,
                              shuffle=False, num_workers=config.num_workers,
                              pin_memory=config.pin_memory)

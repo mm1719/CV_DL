@@ -13,19 +13,21 @@ class Config:
     test_dir = os.path.join(data_dir, "test", "unknown")
 
     # 圖片大小
-    image_size = 224
+    image_size = 768
 
     # 訓練設定
-    epochs = 100
-    batch_size = 96
+    epochs = 50
+    batch_size = 16
     num_workers = 8
     pin_memory = True
 
     # 優化器設定（依照論文）
     optimizer = "sgd"
-    lr = 0.1 * (batch_size / 128)  # scaling rule
+    # lr = 0.1 * (batch_size / 128)  # scaling rule
+    lr = 0.01
     momentum = 0.9
-    weight_decay = 5e-5
+    # weight_decay = 5e-5
+    weight_decay = 1e-4
 
     # Scheduler
     scheduler = "cosine"
