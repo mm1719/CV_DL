@@ -11,3 +11,4 @@ HW1/*.ckpt
 HW1/old/*/
 !HW1/old/utils/
 !HW1/requirements.txt
+!HW1/*.md
