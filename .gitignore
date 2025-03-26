@@ -1,0 +1,13 @@
+*.pdf
+*.tar.gz
+
+HW1/*
+!HW1/utils/
+HW1/*.pdf
+HW1/*.ckpt
+!HW1/*.py
+!HW1/*.sh
+!HW1/old/
+HW1/old/*/
+!HW1/old/utils/
+!HW1/requirements.txt
