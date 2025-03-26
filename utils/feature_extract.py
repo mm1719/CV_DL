@@ -2,6 +2,16 @@ import torch
 from tqdm import tqdm
 
 def extract_features_for_tsne(model, dataloader, device):
+    """
+    Extract features from a model for t-SNE visualization.
+    Args:
+        model: A pre-trained model.
+        dataloader: PyTorch dataloader.
+        device: Device to run the model on.
+    Returns:
+        features: Extracted features.
+        labels: Labels for each feature.
+    """
     model.eval()
     features, all_labels = [], []
 

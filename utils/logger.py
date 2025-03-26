@@ -3,6 +3,16 @@ import logging
 from datetime import datetime
 
 def setup_logger(output_dir, name='log'):
+    """
+    Setup logging configuration
+    Args:
+        output_dir: Directory to save log file.
+        name: Name of the logger.
+    Returns:
+        logger: Logger object.
+        log_file: Path to the log file.
+        timestamp: Timestamp string.
+    """
     os.makedirs(output_dir, exist_ok=True)
     timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
     log_file = os.path.join(output_dir, f"{name}_{timestamp}.txt")
