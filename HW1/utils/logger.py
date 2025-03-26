@@ -2,7 +2,8 @@ import os
 import logging
 from datetime import datetime
 
-def setup_logger(output_dir, name='log'):
+
+def setup_logger(output_dir, name="log"):
     """
     Setup logging configuration
     Args:
@@ -14,7 +15,7 @@ def setup_logger(output_dir, name='log'):
         timestamp: Timestamp string.
     """
     os.makedirs(output_dir, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     log_file = os.path.join(output_dir, f"{name}_{timestamp}.txt")
 
     logger = logging.getLogger()
@@ -25,8 +26,9 @@ def setup_logger(output_dir, name='log'):
     if logger.hasHandlers():
         logger.handlers.clear()
 
-    formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s",
-                                  datefmt="%Y-%m-%d %H:%M:%S")
+    formatter = logging.Formatter(
+        "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+    )
 
     # Console log
     console_handler = logging.StreamHandler()

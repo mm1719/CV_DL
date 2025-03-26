@@ -32,7 +32,9 @@ def knn_predict(feature, feature_bank, feature_labels, classes, knn_k, temperatu
 
     one_hot = torch.zeros(feature.size(0) * knn_k, classes, device=feature.device)
     one_hot.scatter_(1, sim_labels.view(-1, 1), 1)
-    weighted_one_hot = one_hot.view(feature.size(0), knn_k, -1) * sim_weight.unsqueeze(-1)
+    weighted_one_hot = one_hot.view(feature.size(0), knn_k, -1) * sim_weight.unsqueeze(
+        -1
+    )
     probs = weighted_one_hot.sum(1)
     pred_labels = probs.argsort(dim=-1, descending=True)
     return pred_labels

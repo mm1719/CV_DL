@@ -8,6 +8,7 @@ class SupConLoss(nn.Module):
     來自原始 Supervised Contrastive Learning 論文的實作
     https://arxiv.org/pdf/2004.11362.pdf
     """
+
     def __init__(self, temperature=0.07):
         super(SupConLoss, self).__init__()
         self.temperature = temperature
@@ -25,8 +26,7 @@ class SupConLoss(nn.Module):
 
         anchor_feature = contrast_feature
         anchor_dot_contrast = torch.div(
-            torch.matmul(anchor_feature, contrast_feature.T),
-            self.temperature
+            torch.matmul(anchor_feature, contrast_feature.T), self.temperature
         )
 
         # remove self-contrast
@@ -37,7 +37,9 @@ class SupConLoss(nn.Module):
 
         # 計算 log-softmax 並取 positive 部分的平均
         exp_logits = torch.exp(anchor_dot_contrast) * logits_mask
-        log_prob = anchor_dot_contrast - torch.log(exp_logits.sum(1, keepdim=True) + 1e-12)
+        log_prob = anchor_dot_contrast - torch.log(
+            exp_logits.sum(1, keepdim=True) + 1e-12
+        )
 
         mean_log_prob_pos = (mask * log_prob).sum(1) / (mask.sum(1) + 1e-12)
         loss = -mean_log_prob_pos.mean()

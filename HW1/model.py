@@ -2,12 +2,13 @@ import torch
 import torch.nn as nn
 import timm
 
+
 def build_model(config):
     # 建立預訓練模型
     model = timm.create_model(
         config.model_name,
         pretrained=config.pretrained,
-        num_classes=0  # 先去掉預設分類層
+        num_classes=0,  # 先去掉預設分類層
     )
 
     in_features = model.num_features
@@ -15,7 +16,7 @@ def build_model(config):
         nn.Linear(in_features, 512),
         nn.ReLU(),
         nn.Dropout(0.2),
-        nn.Linear(512, config.num_classes)
+        nn.Linear(512, config.num_classes),
     )
 
     # 是否使用多 GPU

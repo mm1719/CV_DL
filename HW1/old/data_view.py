@@ -6,16 +6,18 @@ import matplotlib.pyplot as plt
 
 def count_images_in_folders(root_dir):
     counts = {}
-    for split in ['train', 'val', 'test']:
+    for split in ["train", "val", "test"]:
         split_dir = os.path.join(root_dir, split)
         if not os.path.exists(split_dir):
             continue
         class_counts = {
             cls: len(os.listdir(os.path.join(split_dir, cls)))
-            for cls in os.listdir(split_dir) if os.path.isdir(os.path.join(split_dir, cls))  # **確保是資料夾**
+            for cls in os.listdir(split_dir)
+            if os.path.isdir(os.path.join(split_dir, cls))  # **確保是資料夾**
         }
         counts[split] = class_counts
     return counts
+
 
 # 繪製類別分布長條圖
 def plot_class_distribution(counts, split_name):
@@ -42,5 +44,5 @@ for split, counts in image_counts.items():
         print(f"Class {cls}: {num} images")
 
 # 為 train, val, test 繪製分布圖
-if 'train' in image_counts:
-    plot_class_distribution(image_counts['train'], 'train')
+if "train" in image_counts:
+    plot_class_distribution(image_counts["train"], "train")

@@ -5,6 +5,7 @@ import os
 import time
 import torch.nn.functional as F
 
+
 def predict(model, test_loader, config, output_dir, writer, logger):
     """
     Predict test images and save the results to a CSV file.

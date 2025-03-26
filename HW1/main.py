@@ -15,6 +15,7 @@ from utils.feature_extract import extract_features_for_tsne
 from utils.metrics import plot_tsne, plot_confusion_matrix
 from utils.remap import remap_predictions
 
+
 def create_output_dir(timestamp):
     """
     Create output directory for saving logs, models, predictions, and analysis images
@@ -27,19 +28,22 @@ def create_output_dir(timestamp):
     os.makedirs(os.path.join(output_dir, "logs"), exist_ok=True)
     return output_dir
 
+
 def main():
     """
     Run the training, testing, t-SNE visualization, or confusion matrix generation
     based on the mode argument
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('--mode', type=str, required=True,
-                        choices=['train', 'test', 'tsne', 'cm'])
-    parser.add_argument('--timestamp', type=str, default=None,
-                        help="custom run folder name")
+    parser.add_argument(
+        "--mode", type=str, required=True, choices=["train", "test", "tsne", "cm"]
+    )
+    parser.add_argument(
+        "--timestamp", type=str, default=None, help="custom run folder name"
+    )
     args = parser.parse_args()
 
-    timestamp = args.timestamp or datetime.now().strftime('%Y%m%d-%H%M%S')
+    timestamp = args.timestamp or datetime.now().strftime("%Y%m%d-%H%M%S")
     output_dir = create_output_dir(timestamp)
 
     logger, _, _ = setup_logger(output_dir)
@@ -65,7 +69,7 @@ def main():
         test_loader = get_test_loader(config)
         predict(model, test_loader, config, output_dir, writer, logger)
         remap_predictions(os.path.join(output_dir, "prediction.csv"))
-        
+
     elif args.mode == "tsne":
         logger.info("生成 t-SNE 圖")
         model = build_model(config)
@@ -115,6 +119,7 @@ def main():
         plot_confusion_matrix(all_labels, all_preds, save_path=cm_path)
 
     logger.info("任務完成!")
+
 
 if __name__ == "__main__":
     main()

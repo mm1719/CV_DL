@@ -8,11 +8,13 @@ import seaborn as sns
 
 
 def plot_tsne(features, labels, save_path=None):
-    tsne = TSNE(n_components=2, init='pca', random_state=0, perplexity=30)
+    tsne = TSNE(n_components=2, init="pca", random_state=0, perplexity=30)
     embeddings = tsne.fit_transform(features)
 
     plt.figure(figsize=(10, 8))
-    scatter = plt.scatter(embeddings[:, 0], embeddings[:, 1], c=labels, cmap='tab20', s=5, alpha=0.6)
+    scatter = plt.scatter(
+        embeddings[:, 0], embeddings[:, 1], c=labels, cmap="tab20", s=5, alpha=0.6
+    )
     plt.colorbar(scatter, ticks=range(0, 100))
     plt.title("t-SNE")
 
@@ -28,7 +30,14 @@ def plot_confusion_matrix(y_true, y_pred, classes, save_path=None, normalize=Tru
         cm = cm.astype("float") / cm.sum(axis=1, keepdims=True)
 
     plt.figure(figsize=(12, 10))
-    sns.heatmap(cm, annot=False, cmap="Blues", fmt=".2f", xticklabels=classes, yticklabels=classes)
+    sns.heatmap(
+        cm,
+        annot=False,
+        cmap="Blues",
+        fmt=".2f",
+        xticklabels=classes,
+        yticklabels=classes,
+    )
     plt.xlabel("Predicted")
     plt.ylabel("True")
     plt.title("Confusion Matrix")

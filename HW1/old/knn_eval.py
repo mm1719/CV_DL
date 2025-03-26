@@ -28,29 +28,45 @@ def extract_features(encoder, dataloader, device):
 def evaluate_knn(cfg):
     print("[kNN] 使用 SupCon encoder 進行 kNN 分類...")
 
-    log_dir = os.path.join(cfg['output_dir'], cfg['timestamp'])
+    log_dir = os.path.join(cfg["output_dir"], cfg["timestamp"])
     os.makedirs(log_dir, exist_ok=True)
     logger = setup_logger(log_dir)
 
     # 資料集與 dataloader
-    transform = get_transform(cfg, mode='val')
-    train_set = ImageFolder(root=os.path.join(cfg['data_root'], 'train'), transform=transform)
-    val_set = ImageFolder(root=os.path.join(cfg['data_root'], 'val'), transform=transform)
+    transform = get_transform(cfg, mode="val")
+    train_set = ImageFolder(
+        root=os.path.join(cfg["data_root"], "train"), transform=transform
+    )
+    val_set = ImageFolder(
+        root=os.path.join(cfg["data_root"], "val"), transform=transform
+    )
 
-    train_loader = DataLoader(train_set, batch_size=cfg['batch_size'], shuffle=False,
-                              num_workers=cfg['num_workers'], pin_memory=True)
-    val_loader = DataLoader(val_set, batch_size=cfg['batch_size'], shuffle=False,
-                            num_workers=cfg['num_workers'], pin_memory=True)
+    train_loader = DataLoader(
+        train_set,
+        batch_size=cfg["batch_size"],
+        shuffle=False,
+        num_workers=cfg["num_workers"],
+        pin_memory=True,
+    )
+    val_loader = DataLoader(
+        val_set,
+        batch_size=cfg["batch_size"],
+        shuffle=False,
+        num_workers=cfg["num_workers"],
+        pin_memory=True,
+    )
 
     # 載入 encoder
-    encoder = SupConResNet(name=cfg['model_name'], pretrained=False).encoder
-    encoder_path = os.path.join(cfg['output_dir'], cfg['timestamp'], f"supcon_encoder_{cfg['timestamp']}.pth")
-    encoder.load_state_dict(torch.load(encoder_path, map_location='cpu'))
-    encoder.to(cfg['device'])
+    encoder = SupConResNet(name=cfg["model_name"], pretrained=False).encoder
+    encoder_path = os.path.join(
+        cfg["output_dir"], cfg["timestamp"], f"supcon_encoder_{cfg['timestamp']}.pth"
+    )
+    encoder.load_state_dict(torch.load(encoder_path, map_location="cpu"))
+    encoder.to(cfg["device"])
 
     # 抽特徵
-    train_feats, train_labels = extract_features(encoder, train_loader, cfg['device'])
-    val_feats, val_labels = extract_features(encoder, val_loader, cfg['device'])
+    train_feats, train_labels = extract_features(encoder, train_loader, cfg["device"])
+    val_feats, val_labels = extract_features(encoder, val_loader, cfg["device"])
 
     # 計算相似度（cosine）與預測
     sim_matrix = torch.mm(val_feats, train_feats.t())  # [N_val, N_train]
@@ -66,8 +82,7 @@ def evaluate_knn(cfg):
     fig, ax = plt.subplots(figsize=(12, 10))
     sns.heatmap(cm, annot=False, cmap="Blues", xticklabels=False, yticklabels=False)
     ax.set_title("kNN Confusion Matrix")
-    cm_path = os.path.join(log_dir, 'knn_confusion_matrix.png')
+    cm_path = os.path.join(log_dir, "knn_confusion_matrix.png")
     plt.savefig(cm_path)
     plt.close()
     logger.info(f"[kNN] 混淆矩陣儲存於: {cm_path}")
-

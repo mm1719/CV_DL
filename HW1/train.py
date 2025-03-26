@@ -31,7 +31,10 @@ def mixup_data(x, y, alpha=1.0):
     y_a, y_b = y, y[index]
     return mixed_x, y_a, y_b, lam
 
-def train_one_epoch(model, dataloader, optimizer, criterion, scaler, device, epoch, logger, writer):
+
+def train_one_epoch(
+    model, dataloader, optimizer, criterion, scaler, device, epoch, logger, writer
+):
     """
     One epoch of training of the model.
     Args:
@@ -64,10 +67,14 @@ def train_one_epoch(model, dataloader, optimizer, criterion, scaler, device, epo
 
         optimizer.zero_grad()
         if config.use_mixup:
-            images, labels_a, labels_b, lam = mixup_data(images, labels, alpha=config.mixup_alpha)
+            images, labels_a, labels_b, lam = mixup_data(
+                images, labels, alpha=config.mixup_alpha
+            )
             with autocast(device_type="cuda", enabled=config.use_amp):
                 outputs = model(images)
-                loss = lam * criterion(outputs, labels_a) + (1 - lam) * criterion(outputs, labels_b)
+                loss = lam * criterion(outputs, labels_a) + (1 - lam) * criterion(
+                    outputs, labels_b
+                )
         else:
             with autocast(device_type="cuda", enabled=config.use_amp):
                 outputs = model(images)
@@ -80,28 +87,33 @@ def train_one_epoch(model, dataloader, optimizer, criterion, scaler, device, epo
         running_loss += loss.item() * images.size(0)
         if config.use_mixup:
             _, preds = outputs.max(1)
-            correct += lam * (preds == labels_a).sum().item() + (1 - lam) * (preds == labels_b).sum().item()
+            correct += (
+                lam * (preds == labels_a).sum().item()
+                + (1 - lam) * (preds == labels_b).sum().item()
+            )
             total += labels.size(0)
         else:
             _, preds = outputs.max(1)
             correct += (preds == labels).sum().item()
             total += labels.size(0)
 
-
-        acc = 100. * correct / total
-        pbar.set_postfix(loss=running_loss/total, acc=f"{acc:.2f}%")
+        acc = 100.0 * correct / total
+        pbar.set_postfix(loss=running_loss / total, acc=f"{acc:.2f}%")
 
     elapsed = time.time() - start_time
     avg_loss = running_loss / total
-    acc = 100. * correct / total
-    logger.info(f"[Epoch {epoch}/{config.epochs}] Loss: {avg_loss:.4f}  Acc: {acc:.2f}%  Time: {elapsed:.1f}s")
+    acc = 100.0 * correct / total
+    logger.info(
+        f"[Epoch {epoch}/{config.epochs}] Loss: {avg_loss:.4f}  Acc: {acc:.2f}%  Time: {elapsed:.1f}s"
+    )
     writer.add_scalar("Train/Loss", avg_loss, epoch)
     writer.add_scalar("Train/Accuracy", acc, epoch)
     writer.add_scalar("Train/LR", optimizer.param_groups[0]["lr"], epoch)
     return avg_loss, acc
 
+
 def validate(model, dataloader, criterion, device, epoch, logger, writer):
-    """ 
+    """
     Validate the model on the validation set.
     Args:
         model: Model to validate.
@@ -133,15 +145,18 @@ def validate(model, dataloader, criterion, device, epoch, logger, writer):
             correct += (preds == labels).sum().item()
             total += labels.size(0)
 
-            acc = 100. * correct / total
-            pbar.set_postfix(loss=running_loss/total, acc=f"{acc:.2f}%")
+            acc = 100.0 * correct / total
+            pbar.set_postfix(loss=running_loss / total, acc=f"{acc:.2f}%")
 
     avg_loss = running_loss / total
-    acc = 100. * correct / total
-    logger.info(f"[Val   {epoch}/{config.epochs}] Loss: {avg_loss:.4f}  Acc: {acc:.2f}%")
+    acc = 100.0 * correct / total
+    logger.info(
+        f"[Val   {epoch}/{config.epochs}] Loss: {avg_loss:.4f}  Acc: {acc:.2f}%"
+    )
     writer.add_scalar("Val/Loss", avg_loss, epoch)
     writer.add_scalar("Val/Accuracy", acc, epoch)
     return avg_loss, acc
+
 
 def train_model(model, train_loader, val_loader, output_dir, writer, logger):
     """
@@ -158,17 +173,22 @@ def train_model(model, train_loader, val_loader, output_dir, writer, logger):
     model = model.to(device)
 
     criterion = nn.CrossEntropyLoss(label_smoothing=config.label_smoothing)
-    optimizer = torch.optim.SGD(model.parameters(),
-                                lr=config.lr,
-                                momentum=config.momentum,
-                                weight_decay=config.weight_decay)
+    optimizer = torch.optim.SGD(
+        model.parameters(),
+        lr=config.lr,
+        momentum=config.momentum,
+        weight_decay=config.weight_decay,
+    )
 
-    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: epoch / config.warmup_epochs if epoch < config.warmup_epochs else 1.0)
-    
-    scheduler_after = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+    scheduler = torch.optim.lr_scheduler.LambdaLR(
         optimizer,
-        T_0=5,       # 初始週期
-        T_mult=2     # 每次重啟後週期乘上的倍數
+        lambda epoch: (
+            epoch / config.warmup_epochs if epoch < config.warmup_epochs else 1.0
+        ),
+    )
+
+    scheduler_after = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+        optimizer, T_0=5, T_mult=2  # 初始週期  # 每次重啟後週期乘上的倍數
     )
 
     scaler = GradScaler(enabled=config.use_amp)
@@ -178,15 +198,29 @@ def train_model(model, train_loader, val_loader, output_dir, writer, logger):
     early_stop_counter = 0
 
     for epoch in range(1, config.epochs + 1):
-        train_loss, train_acc = train_one_epoch(model, train_loader, optimizer, criterion, scaler, device, epoch, logger, writer)
-        val_loss, val_acc = validate(model, val_loader, criterion, device, epoch, logger, writer)
+        train_loss, train_acc = train_one_epoch(
+            model,
+            train_loader,
+            optimizer,
+            criterion,
+            scaler,
+            device,
+            epoch,
+            logger,
+            writer,
+        )
+        val_loss, val_acc = validate(
+            model, val_loader, criterion, device, epoch, logger, writer
+        )
 
         if epoch <= config.warmup_epochs:
             scheduler.step()
         else:
             scheduler_after.step()
 
-        logger.info(f"Epoch {epoch} Summary: Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
+        logger.info(
+            f"Epoch {epoch} Summary: Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}"
+        )
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
@@ -198,7 +232,9 @@ def train_model(model, train_loader, val_loader, output_dir, writer, logger):
             logger.info(f"[儲存模型] Encoder 權重儲存於: {model_path}")
         else:
             early_stop_counter += 1
-            logger.info(f"EarlyStop counter: {early_stop_counter}/{config.early_stopping_patience}")
+            logger.info(
+                f"EarlyStop counter: {early_stop_counter}/{config.early_stopping_patience}"
+            )
             if early_stop_counter >= config.early_stopping_patience:
                 logger.info(f"早停於 Epoch {epoch}（最佳為 Epoch {best_epoch}）")
                 break

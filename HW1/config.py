@@ -1,5 +1,6 @@
 import os
 
+
 class Config:
     # 模型設定
     model_name = "seresnext101d_32x8d"
@@ -51,5 +52,6 @@ class Config:
     use_amp = False
     multi_gpu = True
     device = "cuda"
+
 
 config = Config()

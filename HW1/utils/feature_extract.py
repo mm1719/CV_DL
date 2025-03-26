@@ -1,6 +1,7 @@
 import torch
 from tqdm import tqdm
 
+
 def extract_features_for_tsne(model, dataloader, device):
     """
     Extract features from a model for t-SNE visualization.
@@ -24,7 +25,11 @@ def extract_features_for_tsne(model, dataloader, device):
             outputs = model.forward_features(images)  # TIMM 模型內建
 
             if outputs.ndim == 4:
-                outputs = torch.nn.functional.adaptive_avg_pool2d(outputs, 1).squeeze(-1).squeeze(-1)
+                outputs = (
+                    torch.nn.functional.adaptive_avg_pool2d(outputs, 1)
+                    .squeeze(-1)
+                    .squeeze(-1)
+                )
 
             features.append(outputs.cpu())
             all_labels.append(targets.cpu())

@@ -1,6 +1,7 @@
 from torch.utils.tensorboard import SummaryWriter
 import os
 
+
 def init_tensorboard(log_dir="runs"):
     """Initialize TensorBoard writer.
     Args:

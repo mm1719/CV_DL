@@ -24,7 +24,7 @@ def check_and_delete_corrupt_images(root_dir):
     Args:
         root_dir: Root directory to search for images.
     """
-    supported_ext = ('.jpg', '.jpeg', '.png', '.bmp', '.gif')
+    supported_ext = (".jpg", ".jpeg", ".png", ".bmp", ".gif")
     corrupt_list = []
 
     for root, _, files in os.walk(root_dir):
