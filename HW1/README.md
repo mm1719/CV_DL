@@ -1,6 +1,7 @@
 # Selected Topics in Visual Recognition using Deep Learning HW1 Report
 - **Name:** 袁孟華
 - **Student ID:** 110550004
+- - **Github Repo:** <https://github.com/mm1719/CV_DL>
 ## How to run
 Simply run the `run.sh`. It includes training, testing and visualizing.  
 Results of one expiriment would store in `outputs/<timestamp>`
