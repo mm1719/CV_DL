@@ -3,6 +3,13 @@ from PIL import Image, UnidentifiedImageError
 
 
 def is_image_corrupt(image_path):
+    """
+    Check if an image file is corrupt.
+    Args:
+        image_path: Path to the image file.
+    Returns:
+        bool: True if the image is corrupt, False otherwise.
+    """
     try:
         with Image.open(image_path) as img:
             img.load()  # 嘗試實際解碼像素內容
@@ -12,6 +19,11 @@ def is_image_corrupt(image_path):
 
 
 def check_and_delete_corrupt_images(root_dir):
+    """
+    Check and delete corrupt images in a directory.
+    Args:
+        root_dir: Root directory to search for images.
+    """
     supported_ext = ('.jpg', '.jpeg', '.png', '.bmp', '.gif')
     corrupt_list = []
 
@@ -25,7 +37,7 @@ def check_and_delete_corrupt_images(root_dir):
                     os.remove(fpath)
                     print(f"[已刪除] {fpath}")
 
-    print("\n✅ 檢查完成，共刪除損壞圖片：", len(corrupt_list))
+    print("\n檢查完成，共刪除損壞圖片：", len(corrupt_list))
 
 
 if __name__ == "__main__":

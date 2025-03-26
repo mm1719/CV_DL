@@ -2,7 +2,6 @@ import os
 from PIL import Image
 import matplotlib.pyplot as plt
 
-# ✅ 修改這一行為你的訓練資料夾（例如：train/val/test）
 data_root = "hw1-data/data/train"
 
 # 收集圖片尺寸
@@ -21,7 +20,7 @@ for root, dirs, files in os.walk(data_root):
 
 # 若沒找到任何圖檔，提醒用戶
 if len(image_sizes) == 0:
-    print(f"❌ 在資料夾 {data_root} 中未找到圖片，請檢查路徑是否正確！")
+    print(f"在資料夾 {data_root} 中未找到圖片，請檢查路徑是否正確！")
     exit()
 
 # 拆分寬與高

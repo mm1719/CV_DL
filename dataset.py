@@ -7,6 +7,9 @@ from PIL import Image
 import torch
 
 class MultiAugDataset(Dataset):
+    """
+    Multiple augmentations dataset.
+    """
     def __init__(self, root, transform, n_views=1):
         self.base_dataset = datasets.ImageFolder(root)
         self.transform = transform
@@ -22,6 +25,9 @@ class MultiAugDataset(Dataset):
         return len(self.base_dataset)
 
 class TestImageDataset(Dataset):
+    """
+    Dataset for test images.
+    """
     def __init__(self, image_dir, transform):
         self.image_paths = sorted([
             os.path.join(image_dir, fname)
@@ -41,6 +47,14 @@ class TestImageDataset(Dataset):
         return len(self.image_paths)
 
 def get_transforms(config):
+    """
+    Returns a list of transforms for training and testing.
+    Args:
+        config: Configuration object.
+    Returns:
+        train_transform: Transform for training images.
+        test_transform: Transform for test images.
+    """
     train_transform = transforms.Compose([
         transforms.Resize((config.image_size, config.image_size)),
         transforms.RandomHorizontalFlip(p=0.5),
@@ -60,6 +74,14 @@ def get_transforms(config):
     return train_transform, test_transform
 
 def get_dataloaders(config):
+    """
+    Returns the DataLoader objects for training and validation.
+    Args:
+        config: Configuration object.
+    Returns:
+        train_loader: DataLoader for training images.
+        val_loader: DataLoader for validation images.
+    """
     train_transform, test_transform = get_transforms(config)
 
     if getattr(config, "num_augmentations", 1) > 1:
@@ -80,6 +102,13 @@ def get_dataloaders(config):
     return train_loader, val_loader
 
 def get_test_loader(config):
+    """
+    Returns the DataLoader object for test images.
+    Args:
+        config: Configuration object.
+    Returns:
+        test_loader: DataLoader for test images.
+    """
     _, test_transform = get_transforms(config)
 
     if config.use_tta:

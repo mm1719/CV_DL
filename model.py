@@ -7,11 +7,11 @@ def build_model(config):
     model = timm.create_model(
         config.model_name,
         pretrained=config.pretrained,
-        num_classes=0  # 先去掉預設分類頭
+        num_classes=0  # 先去掉預設分類層
     )
 
     in_features = model.num_features
-    model.head = nn.Sequential(
+    model.head = nn.Sequential(  # 新增自定義mlp分類層
         nn.Linear(in_features, 512),
         nn.ReLU(),
         nn.Dropout(0.2),

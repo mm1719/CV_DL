@@ -13,7 +13,7 @@ class Config:
     test_dir = os.path.join(data_dir, "test", "unknown")
 
     # 圖片大小
-    image_size = 384  # 升級為較大尺寸
+    image_size = 384  # 一般是224
 
     # 訓練設定
     epochs = 50
@@ -29,23 +29,23 @@ class Config:
 
     # MixUp 設定
     use_mixup = True
-    mixup_alpha = 0.4  # 通常設 0.2~0.4 表現不錯
+    mixup_alpha = 0.4
 
     # Scheduler
     scheduler = "cosine"
     warmup_epochs = 5
 
     # 損失函數
-    label_smoothing = 0.15  # ✅ 啟用 smoothing
+    label_smoothing = 0.15
 
     # Log & Checkpoint
     output_dir = "outputs"
     log_interval = 10
     save_interval = 1
-    early_stopping_patience = 10  # ✅ 提早停止
+    early_stopping_patience = 10
 
     # 測試設定
-    use_tta = True  # ✅ 啟用 Test-Time Augmentation
+    use_tta = True
 
     # GPU 設定
     use_amp = False

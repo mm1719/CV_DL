@@ -9,7 +9,18 @@ import numpy as np
 
 
 def mixup_data(x, y, alpha=1.0):
-    '''MixUp augmentation'''
+    """
+    Apply mixup to a batch of images and labels.
+    Args:
+        x: Input batch of images.
+        y: Input batch of labels.
+        alpha: Mixup hyperparameter.
+    Returns:
+        mixed_x: Mixed images.
+        y_a: Labels of the first image.
+        y_b: Labels of the second image.
+        lam: Lambda value sampled from the beta distribution.
+    """
     if alpha > 0:
         lam = np.random.beta(alpha, alpha)
     else:
@@ -21,6 +32,22 @@ def mixup_data(x, y, alpha=1.0):
     return mixed_x, y_a, y_b, lam
 
 def train_one_epoch(model, dataloader, optimizer, criterion, scaler, device, epoch, logger, writer):
+    """
+    One epoch of training of the model.
+    Args:
+        model: Model to train.
+        dataloader: DataLoader for training images.
+        optimizer: Optimizer for training.
+        criterion: Loss function.
+        scaler: GradScaler for mixed precision training.
+        device: Device to use.
+        epoch: Current epoch number.
+        logger: Logger object.
+        writer: TensorBoard writer.
+    Returns:
+        avg_loss: Average loss of the epoch.
+        acc: Accuracy of the epoch.
+    """
     model.train()
     running_loss = 0.0
     correct = total = 0
@@ -74,6 +101,20 @@ def train_one_epoch(model, dataloader, optimizer, criterion, scaler, device, epo
     return avg_loss, acc
 
 def validate(model, dataloader, criterion, device, epoch, logger, writer):
+    """ 
+    Validate the model on the validation set.
+    Args:
+        model: Model to validate.
+        dataloader: DataLoader for validation images.
+        criterion: Loss function.
+        device: Device to use.
+        epoch: Current epoch number.
+        logger: Logger object.
+        writer: TensorBoard writer.
+    Returns:
+        avg_loss: Average loss of the validation.
+        acc: Accuracy of the validation.
+    """
     model.eval()
     running_loss = 0.0
     correct = total = 0
@@ -103,6 +144,16 @@ def validate(model, dataloader, criterion, device, epoch, logger, writer):
     return avg_loss, acc
 
 def train_model(model, train_loader, val_loader, output_dir, writer, logger):
+    """
+    Train the model.
+    Args:
+        model: Model to train.
+        train_loader: DataLoader for training images.
+        val_loader: DataLoader for validation images.
+        output_dir: Directory to save the best model.
+        writer: TensorBoard writer.
+        logger: Logger object.
+    """
     device = torch.device(config.device if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
@@ -147,7 +198,7 @@ def train_model(model, train_loader, val_loader, output_dir, writer, logger):
             logger.info(f"[儲存模型] Encoder 權重儲存於: {model_path}")
         else:
             early_stop_counter += 1
-            logger.info(f"📉 EarlyStop counter: {early_stop_counter}/{config.early_stopping_patience}")
+            logger.info(f"EarlyStop counter: {early_stop_counter}/{config.early_stopping_patience}")
             if early_stop_counter >= config.early_stopping_patience:
-                logger.info(f"🛑 早停於 Epoch {epoch}（最佳為 Epoch {best_epoch}）")
+                logger.info(f"早停於 Epoch {epoch}（最佳為 Epoch {best_epoch}）")
                 break
