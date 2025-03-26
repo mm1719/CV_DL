@@ -1,6 +1,8 @@
 # Selected Topics in Visual Recognition using Deep Learning HW1 Report
 - **Name:** 袁孟華
 - **Student ID:** 110550004
+## How to run
+Simply run the `run.sh`. It includes training, testing and visualizing.
 ## Introduction
 This report detailed describes the tactics I have approached to training the resnet-based classification model on this iNaturalist-like dataset. Initially I attempted to use Supervised Contrastive Learning (SupCon) with a downstream classfier, but found it time consuming and the results were not satisfiable. However, it gave me an insight on how the high-dimensional encoded results clustered on 2D t-SNE graph, which aided me in the later 2 experiments. As a result, I decided to simplify the classification process by directly training the whole resnet-based model with classifier. In this report, I would mainly describe the methods I have implemented for the latter approach. One was naive approach resulting in 0.91 accuracy. The other was enhanced measure using various tricks (label-smoothing, data-augmentation, etc) leading to 0.94 accuracy. 
 
