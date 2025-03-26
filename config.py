@@ -2,7 +2,7 @@ import os
 
 class Config:
     # 模型設定
-    model_name = "regnety_160"
+    model_name = "seresnext101d_32x8d"
     num_classes = 100
     pretrained = True
 
@@ -13,33 +13,42 @@ class Config:
     test_dir = os.path.join(data_dir, "test", "unknown")
 
     # 圖片大小
-    image_size = 224
+    image_size = 384  # 升級為較大尺寸
 
     # 訓練設定
-    epochs = 25
-    batch_size = 32
+    epochs = 50
+    batch_size = 16
     num_workers = 8
     pin_memory = True
+    num_augmentations = 3
 
-    # 優化器設定（依照論文）
     optimizer = "sgd"
-    # lr = 0.1 * (batch_size / 128)  # scaling rule
-    lr = 0.01
+    lr = 0.05 * (batch_size / 256)
     momentum = 0.9
-    # weight_decay = 5e-5
     weight_decay = 1e-4
+
+    # MixUp 設定
+    use_mixup = True
+    mixup_alpha = 0.4  # 通常設 0.2~0.4 表現不錯
 
     # Scheduler
     scheduler = "cosine"
     warmup_epochs = 5
 
+    # 損失函數
+    label_smoothing = 0.15  # ✅ 啟用 smoothing
+
     # Log & Checkpoint
     output_dir = "outputs"
     log_interval = 10
     save_interval = 1
+    early_stopping_patience = 10  # ✅ 提早停止
+
+    # 測試設定
+    use_tta = True  # ✅ 啟用 Test-Time Augmentation
 
     # GPU 設定
-    use_amp = False  # 自動混合精度
+    use_amp = False
     multi_gpu = True
     device = "cuda"
 

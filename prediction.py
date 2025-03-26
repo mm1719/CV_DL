@@ -3,6 +3,7 @@ import pandas as pd
 from tqdm import tqdm
 import os
 import time
+import torch.nn.functional as F
 
 def predict(model, test_loader, config, output_dir, writer, logger):
     device = torch.device(config.device if torch.cuda.is_available() else "cpu")
@@ -12,16 +13,26 @@ def predict(model, test_loader, config, output_dir, writer, logger):
     predictions = []
     image_names = []
 
-    img_paths = [path for (path, _) in test_loader.dataset.samples]
+    img_paths = test_loader.dataset.image_paths
 
     logger.info("🔍 開始測試集預測")
     start_time = time.time()
 
     with torch.no_grad():
         for i, (images, _) in enumerate(tqdm(test_loader, desc="Predicting")):
-            images = images.to(device)
-            outputs = model(images)
-            _, preds = outputs.max(1)
+            # ✅ TTA 模式（[B, 10, C, H, W] → [B, num_classes])
+            if images.ndim == 5:
+                B, N, C, H, W = images.shape
+                images = images.view(-1, C, H, W).to(device)  # [B×10, C, H, W]
+                outputs = model(images)
+                probs = F.softmax(outputs, dim=1)
+                probs = probs.view(B, N, -1).mean(dim=1)  # [B, num_classes]
+                preds = probs.argmax(dim=1)
+            else:
+                images = images.to(device)
+                outputs = model(images)
+                preds = outputs.argmax(dim=1)
+
             predictions.extend(preds.cpu().tolist())
 
             batch_paths = img_paths[i * config.batch_size : (i + 1) * config.batch_size]

@@ -7,7 +7,15 @@ def build_model(config):
     model = timm.create_model(
         config.model_name,
         pretrained=config.pretrained,
-        num_classes=config.num_classes  # 直接改成 100 類
+        num_classes=0  # 先去掉預設分類頭
+    )
+
+    in_features = model.num_features
+    model.head = nn.Sequential(
+        nn.Linear(in_features, 512),
+        nn.ReLU(),
+        nn.Dropout(0.2),
+        nn.Linear(512, config.num_classes)
     )
 
     # 是否使用多 GPU
