@@ -9,7 +9,7 @@ from utils.logger import setup_logger
 from utils.tensorboard_writer import create_tensorboard_writer
 from utils.metrics import coco_evaluation
 from models.faster_rcnn import get_model
-from dataset.coco_dataset import CocoDetectionDataset
+from data_loader.coco_dataset import CocoDetectionDataset
 from engine.trainer import train_one_epoch, evaluate, save_checkpoint
 from engine.tester import run_inference
 from utils.image_transform import ResizeWithPaddingForTraining, AugmentWithoutResize
