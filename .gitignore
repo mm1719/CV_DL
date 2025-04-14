@@ -1,5 +1,9 @@
 *.pdf
 *.tar.gz
+*.png
+*.jpg
+*.jpeg
+*.json
 
 HW1/*
 !HW1/utils/
@@ -12,3 +16,13 @@ HW1/old/*/
 !HW1/old/utils/
 !HW1/requirements.txt
 !HW1/*.md
+
+HW2/*.pdf
+HW2/*.ckpt
+!HW2/*.py
+!HW2/*.sh
+!HW2/requirements.txt
+!HW2/*.md
+HW2/test*/
+HW2/check*.py
+HW2/testing*.py
