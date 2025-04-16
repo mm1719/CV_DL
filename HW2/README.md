@@ -102,9 +102,11 @@ The left side includes resized image with resized bounding-box, while the restor
 ### Training Curve
 
 ResNet50:
+
 ![ResNet50_training_curve](loss_curve_resnet50.png)
 
 Swin-V2-base:
+
 ![Swin-V2-base_training_curve](loss_curve_swin.png)
 
 ### COCO Evaluation (on Val Set)
@@ -119,7 +121,6 @@ Moreover, ResNest50-backbone outperformed on testing leader board than Swin-V2-b
 | :---            | :---  | :---  |
 | ResNet50        | 0.72  | 0.38  |
 | Swin-V2         | 0.51  | 0.28  |
-
 
 ### My Assumption
 
