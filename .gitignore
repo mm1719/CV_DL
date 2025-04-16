@@ -27,3 +27,5 @@ HW2/test*/
 HW2/check*.py
 HW2/testing*.py
 HW2/__pycache__/
+!HW2/*.png
+HW2/nycu-hw2-data/*
