@@ -10,7 +10,6 @@
 
 ```txt
 .
-|
 `-- 20250412-004325                 # starting timestamp
     |-- best_model.pth              # model weights
     |-- log_20250412-004329.txt     # training log
