@@ -26,3 +26,4 @@ HW2/*.ckpt
 HW2/test*/
 HW2/check*.py
 HW2/testing*.py
+HW2/__pycache__/

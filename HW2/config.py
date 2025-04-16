@@ -15,7 +15,7 @@ class Config:
 
         # === 模型選擇與訓練變體（會自動選擇超參數與 Optimizer/Scheduler） ===
         self.backbone = "resnet50"  # "resnet50" 或 "swin"
-        self.variant = "adamw_step"  # 可選："adamw_step", "adamw_cosine"
+        self.variant = "sgd_step"  # 可選："sgd_step", "adamw_cosine"
         self.swin_model_name = "swinv2_base_window8_256"
 
         # === 類別與硬體設定 ===
@@ -25,7 +25,7 @@ class Config:
 
         # === 各種變體對應的超參數 ===
         self.variants = {
-            "adamw_step": {
+            "sgd_step": {
                 "batch_size": 4,
                 "lr": 0.005,
                 "lr_step_size": 10,
