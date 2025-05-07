@@ -139,7 +139,7 @@ AP:
 
 As I mentioned above, I tried to use **Weakly Supervised w/. MIL Loss** with "mask_rcnn_R_50_FPN_3x.yaml" mentioned in the course, thus I implemented `dataloader/coco_mil_dataloader.py` and `utils/mil_loss.py` for bounding-box-only data and MIL loss function implementation.
 
-The result seems pretty similar to the default one, but the training time is a bit faster (2 minutes per 1000 epochs).
+The result is pretty similar to the default one, but the training time is a bit faster (2 minutes per 1000 epochs).
 
 ## Reference
 
