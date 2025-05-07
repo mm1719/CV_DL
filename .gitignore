@@ -4,6 +4,11 @@
 *.jpg
 *.jpeg
 *.json
+*.tif
+*.zip
+*.pyc
+
+WSIS_BBTP/*
 
 HW1/*
 !HW1/utils/
@@ -29,3 +34,20 @@ HW2/testing*.py
 HW2/__pycache__/
 !HW2/*.png
 HW2/nycu-hw2-data/*
+
+HW3/*.pdf
+HW3/*.ckpt
+!HW3/*.py
+!HW3/*.sh
+!HW3/requirements.txt
+!HW3/*.md
+HW3/test*/
+HW3/check*.py
+HW3/testing*.py
+HW3/__pycache__/
+!HW3/*.png
+HW3/hw3-data/*
+HW3/try_*
+HW3/drive*
+HW3/2025*
+HW3/src*
