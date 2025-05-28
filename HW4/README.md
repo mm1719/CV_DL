@@ -50,6 +50,7 @@ Detailed setting can be found in `outputs/timestamp/config.yaml`:
 
 ## Result
 
+### Training Result
 Train Loss:
 
 ![alt text](train_loss.png)
@@ -63,7 +64,10 @@ Val PSNR:
 ![alt text](PSNR.png)
 
 Note: 400 (epoch) x 2 (iterations/epoch) = 800 steps
-**Test PSNR: 30.11**
+
+### Testing Result
+
+Test PSNR: **30.11**
 
 ## Additional Expirements and Results
 
