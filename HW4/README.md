@@ -51,6 +51,7 @@ Detailed setting can be found in `outputs/timestamp/config.yaml`:
 ## Result
 
 ### Training Result
+
 Train Loss:
 
 ![alt text](train_loss.png)
@@ -75,4 +76,4 @@ To explore the potential benefits of increasing model capacity, we doubled the n
 
 ## Reference
 
-* Potlapalli, V., Zamir, S. W., Khan, S., & Khan, F. S. (2023, June 22). ProMpTIR: Prompting for All-in-One Blind Image Restoration. arXiv.org. https://arxiv.org/abs/2306.13090
+- Potlapalli, V., Zamir, S. W., Khan, S., & Khan, F. S. (2023, June 22). ProMpTIR: Prompting for All-in-One Blind Image Restoration. arXiv.org.
